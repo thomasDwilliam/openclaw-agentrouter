@@ -319,6 +319,36 @@ CFGEOF
 success "OpenClaw config written to $OPENCLAW_CONFIG"
 echo ""
 
+# ── Step 9: Install and start OpenClaw gateway service ───────
+echo -e "${BOLD}── Step 9: Starting OpenClaw gateway ───────────────────${NC}"
+echo ""
+
+info "Installing OpenClaw gateway as a systemd service..."
+openclaw gateway install 2>/dev/null || true
+
+info "Starting OpenClaw gateway service..."
+systemctl --user start openclaw-gateway.service 2>/dev/null || \
+  loginctl enable-linger root 2>/dev/null && \
+  systemctl --user start openclaw-gateway.service 2>/dev/null || true
+
+# Fallback: if --user doesn't work for root, use system-level
+if ! systemctl --user is-active --quiet openclaw-gateway.service 2>/dev/null; then
+  info "Trying system-level gateway start..."
+  # Run gateway in background directly
+  nohup openclaw gateway > /tmp/openclaw-gateway.log 2>&1 &
+  sleep 3
+  if pgrep -f "openclaw gateway" > /dev/null; then
+    success "OpenClaw gateway started in background (PID: $(pgrep -f 'openclaw gateway'))."
+    info "Gateway log: /tmp/openclaw-gateway.log"
+  else
+    warn "Could not auto-start gateway. Run manually: openclaw gateway"
+  fi
+else
+  systemctl --user enable openclaw-gateway.service 2>/dev/null || true
+  success "OpenClaw gateway service is running and enabled on boot."
+fi
+echo ""
+
 # ── Done ──────────────────────────────────────────────────────
 echo -e "${GREEN}${BOLD}"
 echo "  ╔═══════════════════════════════════════════════╗"
@@ -329,11 +359,11 @@ echo -e "  ${BOLD}Model:${NC}    $MODEL_ID"
 echo -e "  ${BOLD}Proxy:${NC}    http://127.0.0.1:${PROXY_PORT}"
 echo -e "  ${BOLD}Config:${NC}   $OPENCLAW_CONFIG"
 echo ""
-echo -e "  ${CYAN}Start the gateway:${NC}"
-echo -e "  ${BOLD}openclaw gateway start${NC}"
-echo ""
 echo -e "  ${CYAN}Open the chat TUI:${NC}"
 echo -e "  ${BOLD}openclaw tui${NC}"
+echo ""
+echo -e "  ${CYAN}Check gateway status:${NC}"
+echo -e "  ${BOLD}openclaw health${NC}"
 echo ""
 echo -e "  ${CYAN}Check proxy status:${NC}"
 echo -e "  ${BOLD}systemctl status agentrouter-proxy${NC}"
