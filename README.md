@@ -6,7 +6,7 @@
 
 ## 🧠 What is this?
 
-[AgentRouter]([https://agentrouter.org](https://agentrouter.org/register?aff=GD9A) is a **free public AI gateway** that provides access to DeepSeek models (v3.2, v3.1, R1, etc.) and other LLMs at no cost. It was originally built for tools like KiloCode, RooCode, and OpenAI Codex.
+[AgentRouter]([https://agentrouter.org](https://agentrouter.org/register?aff=GD9A]) is a **free public AI gateway** that provides access to DeepSeek models (v3.2, v3.1, R1, etc.) and other LLMs at no cost. It was originally built for tools like KiloCode, RooCode, and OpenAI Codex.
 
 [OpenClaw](https://openclaw.ai) is a powerful agentic AI shell that supports custom model providers — but AgentRouter blocks requests from unrecognized clients using **TLS fingerprinting**.
 
