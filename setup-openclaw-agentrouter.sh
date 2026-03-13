@@ -69,8 +69,10 @@ case "$MODEL_CHOICE" in
   3) MODEL_ID="deepseek-r1-0528" ;;
   4) MODEL_ID="glm-4.5" ;;
   5) MODEL_ID="glm-4.6" ;;
-  6|*)
-    if [[ "$MODEL_CHOICE" =~ ^[1-6]$ ]]; then
+  6) MODEL_ID="glm-4.6" ;;
+  7) MODEL_ID="glm-4.6" ;;
+  8|*)
+    if [[ "$MODEL_CHOICE" =~ ^[1-8]$ ]]; then
       ask "Enter your custom model ID exactly as shown in your AgentRouter portal:"
       read -r MODEL_ID
     else
