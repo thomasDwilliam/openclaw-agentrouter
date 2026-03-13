@@ -58,7 +58,9 @@ echo "  2) deepseek-v3.1"
 echo "  3) deepseek-r1-0528"
 echo "  4) glm-4.5"
 echo "  5) glm-4.6"
-echo "  6) Enter custom model ID"
+echo "  6) claude-haiku-4-5-20251001"
+echo "  7) claude-opus-4-6"
+echo "  8) Enter custom model ID"
 echo ""
 ask "Enter the number or type your exact model ID from your AgentRouter portal:"
 read -r MODEL_CHOICE
@@ -69,8 +71,8 @@ case "$MODEL_CHOICE" in
   3) MODEL_ID="deepseek-r1-0528" ;;
   4) MODEL_ID="glm-4.5" ;;
   5) MODEL_ID="glm-4.6" ;;
-  6) MODEL_ID="glm-4.6" ;;
-  7) MODEL_ID="glm-4.6" ;;
+  6) MODEL_ID="claude-haiku-4-5-20251001" ;;
+  7) MODEL_ID="claude-opus-4-6" ;;
   8|*)
     if [[ "$MODEL_CHOICE" =~ ^[1-8]$ ]]; then
       ask "Enter your custom model ID exactly as shown in your AgentRouter portal:"
