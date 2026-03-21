@@ -4,7 +4,7 @@ chcp 65001 >nul 2>&1
 
 :: ============================================================
 ::  OpenClaw + AgentRouter Setup Script  (Windows)
-::  GitHub: https://github.com/yourname/openclaw-agentrouter
+::  GitHub: https://github.com/thomasDwilliam/openclaw-agentrouter
 ::  Supports: Windows 10/11
 ::  Installation modes: System-wide | Docker
 :: ============================================================
