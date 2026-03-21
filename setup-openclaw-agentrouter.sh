@@ -2,7 +2,7 @@
 
 # ============================================================
 #  OpenClaw + AgentRouter Setup Script
-#  GitHub: https://github.com/yourname/openclaw-agentrouter
+#  GitHub: https://github.com/thomasDwilliam/openclaw-agentrouter
 #  Supports: Linux (Debian/Ubuntu/RHEL/Arch) and macOS
 #  Installation modes: System-wide | Docker
 # ============================================================
