@@ -1,6 +1,6 @@
 # 🦞 openclaw-agentrouter
 
-> One-click setup script to connect [OpenClaw](https://openclaw.ai) with [AgentRouter](https://agentrouter.org) — a free DeepSeek API proxy — using a local TLS spoof to bypass client fingerprinting.
+> Setup script to connect [OpenClaw](https://openclaw.ai) with [AgentRouter](https://agentrouter.org) — a free LLM API proxy — using a local TLS spoof to bypass client fingerprinting.
 
 ---
 
@@ -13,28 +13,52 @@
 This script solves that by:
 - Running a **local Python proxy** that spoofs a KiloCode TLS fingerprint
 - Configuring OpenClaw to route all requests through the proxy
-- Setting everything up as a **systemd service** so it survives reboots
+- Setting everything up as a **systemd service** (Linux) or **scheduled task** (Windows) so it survives reboots
 
 ---
 
 ## ✅ Requirements
 
-- Ubuntu / Debian Linux (tested on Ubuntu 24)
-- Root access
+- Ubuntu / Debian Linux, macOS, or Windows
+- Admin / root access
 - A free AgentRouter API key → [agentrouter.org/console/token](https://agentrouter.org/console/token)
 
 ---
 
 ## 🚀 Quick Start
 
+### 🐧 Linux
+
 ```bash
-git clone https://github.com/thomasDwilliam/openclaw-agentrouter.git
-cd openclaw-agentrouter
-chmod +x setup-openclaw-agentrouter.sh
-sudo ./setup-openclaw-agentrouter.sh
+curl -fsSL https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.sh | sudo bash
 ```
 
-The script will interactively ask you for:
+### 🍎 macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.sh | bash
+```
+
+> **Note:** macOS does not use systemd. The proxy will be configured as a launchd agent instead.
+
+### 🪟 Windows
+
+Download and run the setup batch file:
+
+1. Download **[setup-openclaw-agentrouter.bat](https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.bat)**
+2. Right-click the downloaded file and select **"Run as administrator"**
+
+Or download via PowerShell:
+
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.bat" -OutFile "setup-openclaw-agentrouter.bat"
+```
+
+Then right-click → Run as administrator.
+
+---
+
+The setup script will interactively ask you for:
 - Your AgentRouter API key
 - Your preferred model (from a menu or custom input)
 - Context window size (default: 128,000 tokens)
@@ -48,8 +72,8 @@ The script will interactively ask you for:
 | Node.js 22+ | Required by OpenClaw |
 | OpenClaw | Latest version via npm |
 | Python packages | `tls-client`, `flask`, `typing_extensions` |
-| TLS Proxy | `/root/agentrouter-proxy.py` on port `19999` |
-| Systemd service | `agentrouter-proxy.service` (auto-starts on boot) |
+| TLS Proxy | On port `19999` |
+| Auto-start service | systemd (Linux) / launchd (macOS) / Task Scheduler (Windows) |
 | OpenClaw config | `~/.openclaw/openclaw.json` |
 
 ---
@@ -63,8 +87,8 @@ Models available on AgentRouter (check your portal for the full list):
 | `deepseek-v3.2` | DeepSeek V3.2 — latest, recommended |
 | `deepseek-v3.1` | DeepSeek V3.1 |
 | `deepseek-r1-0528` | DeepSeek R1 reasoning model |
-| `glm-4.5` | Zhipu GLM-4.5 |
-| `glm-4.6` | Zhipu GLM-4.6 |
+| `glm-4.5` | Zhiyu GLM-4.5 |
+| `glm-4.6` | Zhiyu GLM-4.6 |
 
 > You can also enter any custom model ID from your [AgentRouter dashboard](https://agentrouter.org/console/token).
 
@@ -107,6 +131,8 @@ openclaw tui
 
 ## 🔍 Troubleshooting
 
+### Linux / macOS
+
 **Check proxy status:**
 ```bash
 systemctl status agentrouter-proxy
@@ -118,7 +144,20 @@ journalctl -u agentrouter-proxy -f
 systemctl restart agentrouter-proxy
 ```
 
-**Test proxy manually:**
+### Windows
+
+**Check if proxy is running:**
+```powershell
+Get-Process python | Where-Object { $_.MainWindowTitle -like "*agentrouter*" }
+```
+
+**Restart via Task Scheduler:**
+Open Task Scheduler → find `AgentRouterProxy` → right-click → Run.
+
+---
+
+### Test the proxy (all platforms)
+
 ```bash
 curl http://127.0.0.1:19999/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -126,10 +165,11 @@ curl http://127.0.0.1:19999/v1/chat/completions \
   -d '{"model": "deepseek-v3.2", "messages": [{"role": "user", "content": "say hi"}], "max_tokens": 10}'
 ```
 
-**Re-run setup (to change model or API key):**
-```bash
-sudo ./setup-openclaw-agentrouter.sh
-```
+### Re-run setup (to change model or API key)
+
+**Linux / macOS:** Re-run the curl command from the Quick Start section.
+
+**Windows:** Re-download and re-run `setup-openclaw-agentrouter.bat` as administrator.
 
 ---
 
