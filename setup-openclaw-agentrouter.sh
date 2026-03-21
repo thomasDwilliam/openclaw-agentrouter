@@ -55,7 +55,7 @@ print_banner() {
   echo -e "${CYAN}${BOLD}"
   echo "  ╔═══════════════════════════════════════════════╗"
   echo "  ║     OpenClaw + AgentRouter Setup Script       ║"
-  echo "  ║     Powered by DeepSeek via AgentRouter       ║"
+  echo "  ║     Powered by Thomas William                 ║"
   echo "  ╚═══════════════════════════════════════════════╝"
   echo -e "${NC}"
 }
