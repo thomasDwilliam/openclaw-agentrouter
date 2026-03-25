@@ -30,13 +30,13 @@ This script solves that by:
 ### 🐧 Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.sh | sudo bash
+bash <(curl -fsSL https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.sh)
 ```
 
 ### 🍎 macOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.sh | bash
+bash <(curl -fsSL https://raw.githubusercontent.com/thomasDwilliam/openclaw-agentrouter/main/setup-openclaw-agentrouter.sh)
 ```
 
 > **Note:** macOS does not use systemd. The proxy will be configured as a launchd agent instead.
